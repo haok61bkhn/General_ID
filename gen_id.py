@@ -11,8 +11,8 @@ id=open("id.txt","r").read().split("\n")[:-1]
 # The generators use the same arguments as the CLI, only as parameters
 generator = GeneratorFromStrings(
     id,
-    blur=1,
-    count=100000,
+    blur=0,
+    count=30,
     random_blur=True,
     background_type=3,
     random_skew=False,

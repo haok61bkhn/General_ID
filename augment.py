@@ -4,6 +4,7 @@ import numpy as np
 import uuid
 import glob
 import random
+import tqdm
 class Augment(object):
     def __init__(self,ratio):
         self.ratio = ratio
@@ -16,7 +17,7 @@ class Augment(object):
         return img_au
 
     def aug2(self,img):
-        x= random.randint(2,2)
+        x= random.randint(1,2)
         
         seq = iaa.Sequential([
             iaa.MinPooling(kernel_size=x) #=2 or 3,4,5
@@ -25,34 +26,37 @@ class Augment(object):
         return img_au
 
     def aug3(self,img):
-        seq=iaa.Sequential([iaa.Fog()])
+        seq=iaa.Sequential([iaa.Fog(0)])
         img_au=seq(image=img)
         return img_au
     
     def aug4(self,img):
         seq=iaa.Sequential([
-        iaa.Rain(speed=(0.1, 0.3)) 
+        iaa.Rain(speed=(0)) 
         ])
         img_au=seq(image=img)
         return img_au
     
     def run(self,img):
         img_aus=[]
-        x=random.randint(0,100)
-        if(x/100>self.ratio):
-            img_aus.append(self.aug1(img))
+        # x=random.randint(0,100)
+        # if(x/100<self.ratio):
+        #     img_aus.append(self.aug1(img))
 
+        #take
         x=random.randint(0,100)
-        if(x/100>self.ratio):
+        if(x/100<self.ratio):
             img_aus.append(self.aug2(img))
 
+
+        #take
         x=random.randint(0,100)
-        if(x/100>self.ratio):
+        if(x/100<self.ratio):
             img_aus.append(self.aug3(img))
 
-        x=random.randint(0,100)
-        if(x/100>self.ratio):
-            img_aus.append(self.aug4(img))
+        # x=random.randint(0,100)
+        # if(x/100<self.ratio):
+        #     img_aus.append(self.aug4(img))
         
         return img_aus
 
@@ -62,7 +66,7 @@ if __name__ == "__main__":
     X=Augment(0.5)
     d=0
     list_img=glob.glob("data/*.jpg")
-    for path in list_img:
+    for path in tqdm(list_img):
     
         name=path.split("/")[-1]
         img=cv2.imread(path)
